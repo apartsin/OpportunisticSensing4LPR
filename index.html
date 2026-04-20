@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapping License Plate Recoverability Under Extreme Viewing Angles for Opportunistic Urban Sensing</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+ onload="renderMathInElement(document.body,{delimiters:[
+ {left:'$$',right:'$$',display:true},
+ {left:'$',right:'$',display:false}
+ ]})"></script>
+<style>
+/* ============================================================
+ BASE TYPOGRAPHY
+ ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+ --accent: #1a5276;
+ --accent2: #2471a3;
+ --rule: #2c3e50;
+ --light-bg: #f4f6f8;
+ --border: #cdd3d8;
+ --font-body: Georgia, "Times New Roman", Times, serif;
+ --font-sans: "Helvetica Neue", Arial, sans-serif;
+ --font-mono: "Courier New", Courier, monospace;
+ --col-gap: 2.2em;
+ --eq-count: 0;
+}
+
+body {
+ font-family: var(--font-body);
+ font-size: 10.5pt;
+ line-height: 1.58;
+ color: #111;
+ background: #fff;
+ max-width: 950px;
+ margin: 0 auto;
+ padding: 2.5em 2em 4em;
+}
+
+/* ============================================================
+ JOURNAL HEADER
+ ============================================================ */
+.journal-header {
+ border-top: 3px solid var(--rule);
+ border-bottom: 1px solid var(--border);
+ padding: 0.55em 0;
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-end;
+ margin-bottom: 1.8em;
+ font-family: var(--font-sans);
+ font-size: 8pt;
+ color: #555;
+}
+.journal-header .jname {
+ font-weight: 700;
+ font-size: 9pt;
+ color: var(--accent);
+ letter-spacing: 0.02em;
+}
+
+/* ============================================================
+ HIGHLIGHTS BOX
+ ============================================================ */
+.highlights {
+ background: var(--light-bg);
+ border-left: 4px solid var(--accent);
+ padding: 0.9em 1.2em;
+ margin-bottom: 1.8em;
+ font-size: 9pt;
+ font-family: var(--font-sans);
+}
+.highlights h3 {
+ font-size: 8.5pt;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.08em;
+ color: var(--accent);
+ margin-bottom: 0.5em;
+}
+.highlights ul { padding-left: 1.2em; }
+.highlights li { margin-bottom: 0.25em; color: #222; }
+
+/* ============================================================
+ TITLE BLOCK (single column)
+ ============================================================ */
+.title-block { margin-bottom: 1.6em; }
+h1.article-title {
+ font-family: var(--font-sans);
+ font-size: 18pt;
+ font-weight: 700;
+ color: var(--rule);
+ line-height: 1.25;
+ margin-bottom: 0.7em;
+}
+.authors {
+ font-size: 10pt;
+ color: #333;
+ margin-bottom: 0.3em;
+}
+.affiliations {
+ font-size: 8.5pt;
+ color: #666;
+ font-style: italic;
+ margin-bottom: 1em;
+}
+.abstract-block {
+ background: var(--light-bg);
+ border: 1px solid var(--border);
+ border-radius: 3px;
+ padding: 1em 1.3em;
+ margin-bottom: 0.9em;
+}
+.abstract-block h2 {
+ font-family: var(--font-sans);
+ font-size: 8.5pt;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.1em;
+ color: var(--accent);
+ margin-bottom: 0.5em;
+}
+.abstract-block p { font-size: 9.5pt; line-height: 1.6; }
+.keywords {
+ font-size: 9pt;
+ margin-bottom: 1.4em;
+ border-bottom: 1px solid var(--border);
+ padding-bottom: 1.2em;
+}
+.keywords strong { color: var(--accent); }
+
+/* ============================================================
+ TWO-COLUMN BODY
+ ============================================================ */
+.two-col {
+ column-count: 2;
+ column-gap: var(--col-gap);
+ column-rule: 1px solid var(--border);
+}
+
+/* ============================================================
+ HEADINGS
+ ============================================================ */
+h2.sec {
+ font-family: var(--font-sans);
+ font-size: 11pt;
+ font-weight: 700;
+ color: var(--accent);
+ border-bottom: 1.5px solid var(--accent2);
+ padding-bottom: 0.2em;
+ margin: 1.4em 0 0.55em;
+ break-after: avoid;
+ column-span: none;
+}
+h3.subsec {
+ font-family: var(--font-sans);
+ font-size: 9.5pt;
+ font-weight: 700;
+ color: #222;
+ margin: 1.1em 0 0.35em;
+ break-after: avoid;
+}
+h4.subsubsec {
+ font-size: 9.5pt;
+ font-style: italic;
+ font-weight: 700;
+ color: #333;
+ margin: 0.8em 0 0.3em;
+ break-after: avoid;
+}
+
+/* ============================================================
+ PARAGRAPHS
+ ============================================================ */
+p { margin-bottom: 0.65em; text-align: justify; hyphens: auto; }
+p:first-child { text-indent: 0; }
+
+/* ============================================================
+ FIGURES (full-width, break out of columns)
+ ============================================================ */
+figure {
+ column-span: all;
+ margin: 1.4em 0 0.3em;
+ text-align: center;
+ break-inside: avoid;
+}
+figure img {
+ max-width: 100%;
+ height: auto;
+ border: 1px solid var(--border);
+ border-radius: 2px;
+}
+figure.half img { max-width: 60%; }
+figcaption {
+ font-size: 8.5pt;
+ font-family: var(--font-sans);
+ color: #333;
+ margin-top: 0.5em;
+ text-align: left;
+ line-height: 1.45;
+ padding: 0 2em;
+}
+figcaption strong { color: var(--rule); }
+
+/* ============================================================
+ TABLES (full-width)
+ ============================================================ */
+.tbl-wrap {
+ column-span: all;
+ margin: 1.3em 0 0.2em;
+ overflow-x: auto;
+ break-inside: avoid;
+}
+.tbl-caption {
+ font-size: 8.5pt;
+ font-family: var(--font-sans);
+ color: #333;
+ margin-bottom: 0.4em;
+ line-height: 1.45;
+}
+.tbl-caption strong { color: var(--rule); }
+table {
+ width: 100%;
+ border-collapse: collapse;
+ font-size: 8.8pt;
+ font-family: var(--font-sans);
+}
+thead tr { background: var(--accent); color: #fff; }
+thead th {
+ padding: 0.45em 0.7em;
+ text-align: center;
+ font-weight: 600;
+ font-size: 8.2pt;
+ letter-spacing: 0.02em;
+ white-space: nowrap;
+}
+tbody td {
+ padding: 0.38em 0.7em;
+ text-align: center;
+ border-bottom: 1px solid #e0e4e8;
+}
+tbody tr:nth-child(even) { background: #f7f9fb; }
+tbody tr:hover { background: #eef3f8; }
+.td-left { text-align: left !important; font-weight: 600; }
+.best { font-weight: 700; color: var(--accent); }
+
+/* ============================================================
+ EQUATIONS
+ ============================================================ */
+.eq-block {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: relative;
+ margin: 0.9em 0;
+ break-inside: avoid;
+}
+.eq-block .katex-display { margin: 0; }
+.eq-num {
+ position: absolute;
+ right: 0;
+ font-size: 9pt;
+ font-family: var(--font-sans);
+ color: #555;
+}
+
+/* ============================================================
+ INLINE REFERENCES
+ ============================================================ */
+cite { color: var(--accent2); font-style: normal; }
+.fig-ref, .tbl-ref { color: var(--accent2); font-style: normal; }
+
+/* ============================================================
+ REFERENCES SECTION
+ ============================================================ */
+.references {
+ column-span: all;
+ margin-top: 1.8em;
+ border-top: 2px solid var(--rule);
+ padding-top: 1em;
+}
+.references h2 {
+ font-family: var(--font-sans);
+ font-size: 11pt;
+ color: var(--accent);
+ margin-bottom: 0.8em;
+}
+.ref-list {
+ list-style: none;
+ padding: 0;
+ font-size: 8.8pt;
+ line-height: 1.5;
+}
+.ref-list li {
+ margin-bottom: 0.55em;
+ padding-left: 2.2em;
+ text-indent: -2.2em;
+}
+.ref-list li span.rnum {
+ font-weight: 700;
+ color: var(--accent);
+ margin-right: 0.4em;
+}
+
+/* ============================================================
+ MISC UTILITIES
+ ============================================================ */
+.note {
+ font-size: 8.5pt;
+ font-style: italic;
+ color: #555;
+ margin-top: 0.3em;
+}
+hr.sec-rule {
+ column-span: all;
+ border: none;
+ border-top: 1px solid var(--border);
+ margin: 1.2em 0;
+}
+
+/* ============================================================
+ PRINT
+ ============================================================ */
+@media print {
+ body { max-width: 100%; padding: 0; font-size: 10pt; }
+ .two-col { column-count: 2; }
+ a { color: inherit; text-decoration: none; }
+}
+</style>
+<style>
+.docx-download {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  background: #1a5276;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: background 0.15s ease-in-out;
+}
+.docx-download:hover {
+  background: #154360;
+  text-decoration: none;
+  color: #ffffff;
+}
+@media print {
+  .docx-download { display: none; }
+}
+</style>
+</head>
+<body>
+<a class="docx-download"
+   href="Adamenko_et_al_Opportunistic_LPR_draft1.docx"
+   download>
+  Download MS Word (.docx)
+</a>
+
+<!-- ============================================================
+ TITLE BLOCK
+ ============================================================ -->
+<div class="title-block">
+ <h1 class="article-title">
+ Mapping License Plate Recoverability Under Extreme Viewing Angles
+ for Opportunistic Urban Sensing
+ </h1>
+ <div class="authors">Igor Adamenko<sup>1</sup>, Orpaz Ben Aharon<sup>2</sup>, Yehudit Aperstein<sup>3</sup>, Alexander Apartsin<sup>4</sup></div>
+ <div class="affiliations">
+ <sup>1,2</sup>Department of Electrical Engineering, Afeka Academic College of Engineering, Tel Aviv 69988, Israel<br>
+ <sup>3</sup>Intelligent Systems, Afeka Academic College of Engineering, Tel Aviv 69988, Israel<br>
+ <sup>4</sup>School of Computer Science, Faculty of Sciences, HIT&ndash;Holon Institute of Technology, Holon 58102, Israel
+ </div>
+
+ <!-- ABSTRACT -->
+ <div class="abstract-block">
+ <h2>Abstract</h2>
+ <p>
+ Urban environments are saturated with imaging sensors deployed for purposes unrelated to
+ vehicle identification, including automated teller machine cameras, body-worn devices, dashboard
+ cameras, pole-mounted CCTV, and smartphones. We term the use of such non-purpose-built sensors
+ for secondary inference <em>opportunistic sensing</em>; its central open question is where in
+ the space of uncontrolled capture conditions AI-enabled restoration remains reliable. This paper
+ introduces <em>recoverability maps</em>, a task-agnostic methodology for quantifying that
+ boundary, and applies it to oblique-view license plate recognition (LPR) as a concrete showcase.
+ The methodology combines a full-grid synthetic sweep of the degradation parameter space with two
+ summary measures: a boundary area-under-curve that quantifies the fraction of parameter space
+ where inference succeeds, and a reliability score $F$ that measures the frequency and depth of
+ interior failures. For the LPR showcase the parameter space is the oblique-angle grid
+ $[0^\circ, 89^\circ]^2$ sampled by Scrambled Sobol sequences, the degradation combines
+ homographic projection with realistic camera artifacts, and the downstream utility is
+ plate-level optical character recognition accuracy. Five restoration architectures are trained
+ and evaluated on the shared grid: U-Net, an angle-conditioned U-Net, Restormer, Pix2Pix, and an
+ SR3 diffusion model. Approximately $93.4\%$ of the angle grid is recoverable by the best
+ evaluated model; recovery degrades sharply beyond roughly $80^\circ$ in both axes
+ simultaneously, and lateral rotations are consistently harder to reconstruct than elevational
+ ones. Discriminative architectures outperform generative models on coverage, training
+ efficiency, and interior consistency. All five models cluster within a narrow AUC band of
+ $0.89$–$0.92$ and share the same $\alpha/\beta$ asymmetry, indicating that the shape of the
+ recoverable region is determined primarily by sensing geometry rather than by the choice of
+ architecture.
+ </p>
+ </div>
+
+ <div class="keywords">
+ <strong>Keywords:</strong>
+ opportunistic sensing &middot; license plate recognition &middot; smart city cameras &middot;
+ oblique-view restoration &middot; deep learning &middot; recoverability boundary &middot;
+ urban surveillance infrastructure
+ </div>
+</div>
+
+<!-- ============================================================
+ TWO-COLUMN BODY
+ ============================================================ -->
+<div class="two-col">
+
+<!-- ===== 1. INTRODUCTION ===== -->
+<h2 class="sec">1. Introduction</h2>
+
+<p>
+Urban infrastructure routinely accumulates data from sensors installed for one purpose that can
+be reused for another at near-zero marginal cost. Smartphone accelerometers, originally built for
+screen-orientation and step counting, have been used to map road-surface defects from ordinary
+driving <cite>(<a href="#r28">Eriksson et al., 2008</a>)</cite>. Smart-meter electricity readings,
+installed for billing, carry enough detail to infer appliance-level activity patterns. Ambient
+microphones on mobile devices, deployed for voice assistants, can estimate traffic density and
+crowd activity <cite>(<a href="#r26">Lane et al., 2010</a>)</cite>. Parking-sensor magnetometers
+and pedestrian-counter beam-breakers similarly admit secondary interpretations beyond their
+design specification. This pattern, which Campbell et al.
+<cite>(<a href="#r9">2008</a>)</cite> and Ganti et al.
+<cite>(<a href="#r10">2011</a>)</cite> termed <em>opportunistic sensing</em>, has the same
+underlying structure in every case: a sensor deployed for purpose A produces a signal rich enough
+to support a secondary inference B, provided B's signal survives the sensor's original acquisition
+constraints. The practical question is rarely whether opportunistic reuse is possible in
+principle, but where in the space of uncontrolled acquisition conditions the secondary inference
+remains reliable.
+</p>
+<p>
+Imaging sensors are the most information-dense instance of this pattern. Smart cities host over
+one billion surveillance cameras <cite>(<a href="#r13">Kitchin, 2014</a>)</cite>, together with
+an order of magnitude more mobile cameras on vehicles and handheld devices, almost none
+calibrated for any specific downstream inference. When a vehicle of interest passes within range
+of one of these cameras, the captured image can be the only available record. Because the sensor
+was positioned for an unrelated task, however, the plate typically appears at oblique angles,
+foreshortened, blurred, and compressed, conditions that cause standard license plate recognition
+(LPR) pipelines to fail. Modern deep-learning image restoration plausibly recovers such plates,
+but the angular extent of this recovery has not been mapped. This paper asks: given a camera
+that cannot be repositioned, at what viewing angles does enough signal survive for automatic
+LPR to succeed?
+</p>
+
+<p>
+Public benchmarks for recognition tasks are typically task-purposed: their captures are curated
+under controlled or semi-controlled conditions that foreground readability and downstream
+success. This curation is appropriate when the task is the primary goal of the sensor, but it
+leaves an inferential gap when the same sensor is used opportunistically for a secondary task.
+The conditions under which opportunistic sensing operates, namely the extreme corners of the
+acquisition-parameter space, are systematically underrepresented in benchmarks that were never
+designed to cover them. A synthetic benchmark that samples the full parameter grid, including
+the extreme corners, is therefore a natural tool for characterising the boundary of what
+opportunistic sensing can recover; its role is not to replace real-world evaluation but to map
+a regime that real benchmarks do not reach.
+</p>
+<p>
+Existing LPR research assumes near-frontal capture, typically $|\alpha|, |\beta| \leq 30^\circ$,
+and degrades rapidly beyond this range
+<cite>(<a href="#r7">Shashirangana et al., 2021</a>; <a href="#r8">Anagnostopoulos et al., 2008</a>)</cite>.
+In opportunistic captures, by contrast, the plate routinely appears at $\alpha, \beta > 60^\circ$.
+The angular extent within which modern deep-learning image restoration can still recover a
+readable plate has not been mapped.
+</p>
+<p>
+<strong>Contributions.</strong> The primary contribution of this paper is methodological: we
+introduce <em>recoverability maps</em>, a task-agnostic framework for quantifying where in a
+parameterised degradation space an opportunistic sensing task remains reliable, together with two
+summary measures (a boundary area-under-curve and a reliability score $F$) that are adapted from
+classical operating-characteristic and envelope analyses
+<cite>(<a href="#r36">Martin et al., 1997</a>)</cite>
+to the two-dimensional setting. The framework is demonstrated on oblique-view LPR, yielding a
+systematic empirical comparison of five deep-learning restoration architectures (U-Net,
+angle-conditioned U-Net, Restormer, Pix2Pix, SR3 diffusion) on a shared $[0^\circ, 89^\circ]^2$
+grid. Under the conditions of the LPR benchmark, approximately $93.4\%$ of the angle grid is
+recoverable by the best evaluated model, breakdown occurs beyond roughly $80^\circ$ in both axes
+simultaneously, lateral rotations are consistently harder than elevational ones, and PSNR tracks
+OCR accuracy closely enough ($R^2 = 0.99$) to serve as a training-time surrogate. The instances
+of the framework beyond LPR are sketched in Section&nbsp;6.
+</p>
+
+<!-- CONCEPT FIGURE -->
+</div><!-- close two-col temporarily for figure -->
+
+<figure>
+ <img src="figures/city_opportunistic_sensing.png"
+ alt="Urban environment with diverse opportunistic imaging sensors capturing a vehicle">
+ <figcaption>
+ <strong>Fig. 1.</strong> Opportunistic sensing in a smart city environment. Multiple imaging
+ sensors deployed for unrelated purposes, ATM machine cameras, body-worn cameras, vehicle
+ dashcams, pole-mounted CCTV, and handheld smartphones, incidentally capture a passing
+ vehicle at diverse, uncontrolled viewing angles. This paper asks at which of these angles
+ deep-learning image restoration can still recover a readable license plate from such
+ non-purpose-built captures.
+ </figcaption>
+</figure>
+
+<div class="two-col">
+
+<!-- ===== 2. RELATED WORK ===== -->
+<h2 class="sec">2. Related Work</h2>
+
+<h3 class="subsec">2.1. Opportunistic and Repurposed Urban Sensing</h3>
+<p>
+Opportunistic sensing, in which sensors deployed for one purpose are secondarily exploited for
+another, has been systematically studied in mobile and pervasive computing. Burke et al.
+<cite>(<a href="#r27">2006</a>)</cite> introduced participatory sensing as a framework for
+community-scale data collection using everyday mobile devices; Campbell et al.
+<cite>(<a href="#r9">2008</a>)</cite> and Ganti et al. <cite>(<a href="#r10">2011</a>)</cite>
+extended this to opportunistic inference from always-on smartphone sensors. Lane et al.
+<cite>(<a href="#r26">2010</a>)</cite> demonstrated that commodity accelerometers, microphones,
+and cameras embedded in mobile phones can serve as general-purpose environmental monitors when
+paired with appropriate inference algorithms. In urban systems research, related concepts include
+volunteer geographic information <cite>(<a href="#r14">Goodchild, 2007</a>)</cite> and the
+broader data-driven city management paradigm
+<cite>(<a href="#r12">Batty, 2013</a>; <a href="#r13">Kitchin, 2014</a>)</cite>.
+</p>
+<p>
+The diversity of camera platforms in urban environments substantially widens the scope of
+opportunistic sensing beyond fixed infrastructure, following the broader pattern established by
+Eriksson et al. <cite>(<a href="#r28">2008</a>)</cite> for vehicle-mounted sensing without
+dedicated sensing missions.
+</p>
+<p>
+Urban computing <cite>(<a href="#r24">Zheng et al., 2014</a>)</cite> and smart city frameworks
+<cite>(<a href="#r25">Townsend, 2013</a>)</cite> emphasise algorithmic repurposing of existing
+infrastructure to avoid capital expenditure. Two adjacent literatures inform the present study.
+First, urban camera geometry: the classical calibration framework of Zhang
+<cite>(<a href="#r34">2000</a>)</cite> provides the mathematical foundation for estimating the
+oblique pose of arbitrary fixed cameras from minimal scene content, a prerequisite for relating
+any empirical recoverability map to a specific urban sensor in the field. Second, privacy in
+secondary-use imagery: Frome et al. <cite>(<a href="#r35">2009</a>)</cite> documented large-scale
+face and license-plate blurring in Google Street View, establishing that extracting identity
+information from opportunistic captures carries well-understood ethical constraints which any
+deployment of the methods studied here must respect. Recent deep learning advances make such
+repurposing technically viable: where classical computer vision required controlled illumination,
+known geometry, and near-frontal capture, modern restoration pipelines can recover structured
+information from imagery that would previously have been discarded. The present work contributes
+a first quantitative angular boundary for when this AI-enabled repurposing succeeds for LPR under
+a controlled synthetic pipeline.
+</p>
+
+<h3 class="subsec">2.2. License Plate Recognition and Its Assumptions</h3>
+<p>
+LPR is a mature technology in controlled conditions. Comprehensive surveys
+<cite>(<a href="#r7">Shashirangana et al., 2021</a>; <a href="#r8">Anagnostopoulos et al., 2008</a>)</cite>
+document pipelines covering plate detection, character segmentation, and OCR, with commercial systems
+achieving near-perfect accuracy when plates are captured within $\pm 30^\circ$ of the optical axis.
+Oblique-view LPR pipelines exist, but they follow a detection-then-deskew paradigm that assumes the
+plate is already roughly readable before processing: homography estimation corrects for known moderate
+angles but breaks down once the plate is severely foreshortened.
+</p>
+<p>
+Laroca et al. <cite>(<a href="#r23">2021</a>)</cite> constructed a large-scale benchmark for
+end-to-end automatic LPR and demonstrated that recognition accuracy degrades substantially at
+oblique capture angles even for state-of-the-art YOLO-based detectors, confirming the practical
+gap addressed here. Their detection-first pipeline implicitly assumes digit contrast and horizontal
+separation remain sufficient for segmentation, an assumption that fails once azimuthal rotation
+exceeds approximately $45^\circ$. Laroca et al. <cite>(<a href="#r29">2022</a>)</cite> later
+expanded this line with RodoSol-ALPR, explicitly evaluating cross-dataset generalisation and
+showing that LPR performance can drop sharply when the evaluation distribution differs from
+training. Silva and Jung <cite>(<a href="#r30">2018</a>)</cite> proposed WPOD-NET to rectify
+oblique plates via per-instance planar warping before recognition, a detect-then-deskew approach
+that works well up to moderate angles but still requires the plate to be roughly readable. Xu et
+al. <cite>(<a href="#r31">2021</a>)</cite> built an explicit perspective-rectification module
+into the LPR pipeline. A parallel line of work treats oblique LPR as a super-resolution problem:
+Zou et al. <cite>(<a href="#r32">2019</a>)</cite> target extremely low-resolution plates, and
+Hamdi et al. <cite>(<a href="#r33">2021</a>)</cite> combine image enhancement with super-resolution
+to improve downstream OCR. The present work takes a different angle from these restoration-oriented
+studies: rather than
+proposing another restoration architecture, we map <em>where in the angle space</em> restoration
+remains viable at all, treating recoverability as a measurable property of the sensing geometry.
+</p>
+<p>
+Evaluation of recognition under degradation has a long history in related domains. PSNR and SSIM
+<cite>(<a href="#r18">Wang et al., 2004</a>)</cite> are the standard image-quality proxies, but
+their correlation with downstream task performance is contested: for OCR and face recognition,
+PSNR is a more reliable predictor than SSIM
+<cite>(<a href="#r15">Chen et al., 2024</a>)</cite>. This relationship has not been established
+for LPR under oblique-angle distortion. Prior recoverability analyses in audio and face
+recognition use threshold curves and operating-characteristic measures over a degradation
+parameter, but no such framework has been applied to the two-dimensional $(\alpha, \beta)$ space
+of camera viewing angles; the present work provides such a characterisation.
+</p>
+
+<h3 class="subsec">2.3. Deep Learning Image Restoration</h3>
+<p>
+The U-Net architecture <cite>(<a href="#r1">Ronneberger et al., 2015</a>)</cite>, with its skip
+connections between encoder and decoder, remains a strong baseline for paired image-to-image tasks.
+The foundational U-Net architecture uses skip connections to preserve spatial detail through
+successive downsampling and upsampling stages. Oktay et al.
+<cite>(<a href="#r21">2018</a>)</cite> extended it with soft attention gates (Attention U-Net) that
+selectively emphasise encoder features relevant to the decoder prediction; a natural fit for
+localised digit regions on a plate. Transformer-based alternatives such as Restormer
+<cite>(<a href="#r2">Zamir et al., 2022</a>)</cite> and Uformer
+<cite>(<a href="#r17">Wang et al., 2022</a>)</cite> extend global context modelling to restoration,
+achieving state-of-the-art results on denoising and deblurring benchmarks.
+</p>
+<p>
+On the generative side, Goodfellow et al. <cite>(<a href="#r19">2014</a>)</cite> introduced the
+generative adversarial network (GAN) framework; Pix2Pix
+<cite>(<a href="#r3">Isola et al., 2017</a>)</cite> adapted this to paired image translation via
+a patch discriminator. ESRGAN <cite>(<a href="#r22">Wang et al., 2018</a>)</cite> demonstrated that
+perceptual and adversarial losses recover fine texture detail in super-resolution, at the cost of
+potential hallucination artefacts analogous to those we observe in Diffusion-SR3. Saharia et al.
+<cite>(<a href="#r20">2022</a>)</cite> proposed SR3, conditioning a denoising diffusion probabilistic
+model on a low-quality input for iterative refinement; we adapt this architecture directly for
+oblique-plate restoration. None of these works has been benchmarked on the systematic
+oblique-angle regime relevant to urban camera repurposing.
+</p>
+
+<h3 class="subsec">2.4. Low-Discrepancy Sampling for Benchmark Design</h3>
+<p>
+Monte Carlo methods for sampling multi-dimensional parameter spaces suffer from clustering and
+gaps at moderate sample sizes. Sobol sequences, a class of quasi-Monte Carlo methods
+<cite>(<a href="#r6">Burhenne et al., 2011</a>; <a href="#r16">Joe &amp; Kuo, 2008</a>)</cite>,
+provide provably better coverage of the unit hypercube than pseudo-random sampling: the
+discrepancy of an $N$-point Sobol set grows as $O((\log N)^d / N)$ compared to $O(N^{-1/2})$
+for random sampling in dimension $d$. Applying Sobol sequences to the angle space ensures that the
+training dataset covers extreme and moderate angles uniformly, which is essential for learning a
+restoration model that generalizes across the full deployment range of a fixed urban sensor.
+</p>
+
+<!-- ===== 3. PROBLEM FORMULATION ===== -->
+<h2 class="sec">3. Problem Formulation</h2>
+
+<p>
+<strong>Notation.</strong> The following symbols are used consistently throughout the paper:
+</p>
+<ul style="margin:0.2em 0 0.7em 1.4em; font-size:9pt; line-height:1.5;">
+ <li>$\alpha, \beta \in [-90^\circ, 90^\circ]$: primary variables, the azimuthal (lateral) and
+ elevational (vertical) viewing angles of the plate relative to the camera optical axis.</li>
+ <li>$x_0$, $x_d$, $\hat{x}_0$: clean plate image, observed distorted image, and restored plate
+ image produced by the network.</li>
+ <li>$\mathbf{R}(\alpha, \beta)$: homogeneous-coordinate rotation matrix; $\Pi$: perspective
+ projection onto the image plane.</li>
+ <li>$D_{\text{edge}}, D_{\text{jitter}}, D_{\text{blur}}, D_{\text{JPEG}}$: the four degradation
+ operators (edge blending, colour jitter, Gaussian blur, JPEG compression) defined in Eq.&nbsp;1.</li>
+ <li>$r_T(\alpha, \beta) \in \{0, 1\}$: binary recoverability indicator at OCR threshold $T$.</li>
+ <li>$B_T$: recoverability boundary curve; $\text{AUC}$ and $F$: coverage and reliability metrics
+ defined in Eqs.&nbsp;5 and 7.</li>
+ <li>$f_\theta$: restoration network with parameters $\theta$.</li>
+ <li>$\bar{\alpha}_t$ and $\beta_i$ (appearing only in Eq.&nbsp;8): diffusion-model schedule
+ coefficients; these are distinct from the viewing angles $\alpha, \beta$ and are used only in the
+ SR3 formulation.</li>
+</ul>
+
+<p>
+Consider a fixed camera at position $\mathbf{p}$ in an urban environment. A vehicle passes within
+the camera field of view, and its license plate undergoes a rotation described by two angles:
+$\alpha \in [-90^\circ, 90^\circ]$ (azimuthal, lateral tilt relative to the camera optical axis)
+and $\beta \in [-90^\circ, 90^\circ]$ (elevational, vertical tilt). The 3D rotation of the plate
+normal vector is modelled as successive rotations $\mathbf{R}(\alpha, \beta)$ applied in homogeneous
+coordinates, followed by a perspective projection $\Pi$ onto the image plane:
+</p>
+
+<div class="eq-block">
+ $$x_d = D_{\text{JPEG}} \circ D_{\text{blur}} \circ D_{\text{jitter}} \circ D_{\text{edge}} \circ
+ \Pi\!\left(\mathbf{R}(\alpha,\beta)\,x_0\right)$$
+ <span class="eq-num">(1)</span>
+ </div>
+
+<p>
+where $x_0$ is the clean plate image, $\mathbf{R}(\alpha,\beta)\,x_0$ applies the planar rotation
+in homogeneous coordinates, $\Pi$ is the perspective projection, and the four degradation stages
+are applied in order: $D_{\text{edge}}$ performs alpha-mask edge blending with a signed-distance
+field, $D_{\text{jitter}}$ applies brightness/contrast/saturation jitter, $D_{\text{blur}}$ applies
+isotropic Gaussian blur with $\sigma \in [0.5, 1.5]$, and $D_{\text{JPEG}}$ compresses the image
+at quality $q \in [55, 85]$. The composition yields the observed distorted image $x_d$.
+Following the construction described in Section&nbsp;4.1, $x_d$ is subsequently de-warped by the
+inverse homography $R(\alpha,\beta)^{-1}$ and resized to $256\times 64$ before being passed to
+the restoration network; this re-aligned input is what each $f_\theta$ learns to correct. Thus
+the angular boundary reported in this paper is the boundary <em>after</em> inverse-homography
+compensation and reflects what information remains after resampling, not the raw oblique capture.
+The goal is to learn a restoration function $\hat{x}_0 = f_\theta(x_d)$ such that an OCR engine
+applied to $\hat{x}_0$ correctly reads the plate number.
+</p>
+
+<p>
+Although the remainder of this paper specialises to LPR, the recoverability formalism introduced
+below is task-agnostic: given any parameterised degradation space $\mathcal{P}$ and any binary
+utility function $u : \mathcal{P} \to \{0, 1\}$ indicating successful inference, the boundary-AUC
+and reliability score $F$ defined in Eqs.&nbsp;5 and 7 carry over verbatim. In this paper
+$\mathcal{P} = [0^\circ, 89^\circ]^2$ is the oblique-angle grid and $u$ is thresholded plate-level
+OCR accuracy; other opportunistic-sensing tasks would instantiate $\mathcal{P}$ and $u$
+differently but use the same machinery.
+</p>
+<p>
+Let $\text{OCR}_{\text{plate}}(\alpha, \beta) \in [0, 1]$ denote the mean plate-level recognition
+accuracy (fraction of digits correctly identified) over a set of test images at angle pair
+$(\alpha, \beta)$. We define the binary <em>recoverability indicator</em> at threshold $T$:
+</p>
+
+<div class="eq-block">
+ $$r_T(\alpha, \beta) = \mathbf{1}\!\left[\text{OCR}_{\text{plate}}(\alpha, \beta) \geq T\right]$$
+ <span class="eq-num">(2)</span>
+</div>
+
+<p>
+We set $T = 0.9$, requiring at least 9 out of 10 plates at each angle pair to be fully recognized.
+The <em>recoverability boundary</em> $B_T$ is the outer envelope of the region where $r_T = 1$.
+Formally, define (using the convention $\max\varnothing=-1$ so a fully unrecoverable slice is
+distinguishable from a boundary at $\beta=0$):
+</p>
+
+<div class="eq-block">
+ $$\beta_{\max}(\alpha) = \max\!\left(\{-1\} \cup \{\beta \in [0, 89] \mid r_T(\alpha,\beta) = 1\}\right)$$
+ <span class="eq-num">(3)</span>
+</div>
+<div class="eq-block">
+ $$\alpha_{\max}(\beta) = \max\!\left(\{-1\} \cup \{\alpha \in [0, 89] \mid r_T(\alpha,\beta) = 1\}\right)$$
+ <span class="eq-num">(4)</span>
+</div>
+
+<p>
+The boundary is $B_T = C_1 \cup C_2$ where $C_1 = \{(\alpha, \beta_{\max}(\alpha))\}$ and
+$C_2 = \{(\alpha_{\max}(\beta), \beta)\}$ for $\alpha, \beta \in [0, 89]$. The
+<em>boundary-AUC</em> normalises the enclosed area by the full grid:
+</p>
+
+<div class="eq-block">
+ $$\text{AUC} = \frac{1}{89^2} \cdot \frac{1}{2}\!\left(\int_0^{89}\!\beta_{\max}(\alpha)\,d\alpha + \int_0^{89}\!\alpha_{\max}(\beta)\,d\beta\right)$$
+ <span class="eq-num">(5)</span>
+</div>
+
+<p>
+Boundary-AUC measures the area enclosed by the outer envelope of the recoverable region and
+therefore quantifies its <em>coverage</em>; by construction it does not penalise non-convex
+structure, for instance holes of failure inside the envelope, which can inflate AUC relative to
+the actually recoverable area. To capture the <em>consistency</em> of recoverability inside
+$B_T$, we measure how deeply failures penetrate the recoverable region, a quantity conceptually
+related to erosion-style measures in mathematical morphology
+<cite>(<a href="#r37">Serra, 1982</a>)</cite>. For each failed angle pair $(\alpha_h, \beta_h)$
+inside $B_T$, compute its minimum Euclidean distance to the boundary:
+</p>
+
+<div class="eq-block">
+ $$d_h = \min_{(\alpha_b,\beta_b)\in B_T}\!\sqrt{(\alpha_h-\alpha_b)^2 + (\beta_h-\beta_b)^2}$$
+ <span class="eq-num">(6)</span>
+</div>
+
+<p>
+The <em>reliability score</em> $F$ is the root-mean-square of these distances, normalised by the
+enclosed area $E$:
+</p>
+
+<div class="eq-block">
+ $$F = \sqrt{\frac{1}{E}\sum_{h=1}^{N} d_h^2}$$
+ <span class="eq-num">(7)</span>
+</div>
+
+<p>
+$F = 0$ denotes no interior failures; larger values of $F$ indicate more frequent or deeper
+failures. Taken together, boundary-AUC quantifies the extent of the viewing-angle space over
+which recovery succeeds, while $F$ measures the frequency and depth of failure pockets within
+the nominally recoverable region. A model with high AUC and low $F$ covers a wide area
+uniformly; a model with high AUC but also high $F$ covers a wide area but behaves inconsistently;
+a model with low AUC and low $F$ covers less but fails predictably. OCR is used as the ground
+truth for recoverability because it measures the downstream utility of the restored plate.
+PSNR and SSIM are evaluated subsequently as candidate training-time surrogates for OCR
+(Section&nbsp;5.5).
+</p>
+
+<!-- ===== 4. METHODOLOGY ===== -->
+<h2 class="sec">4. Methodology</h2>
+
+<h3 class="subsec">4.1. Synthetic Dataset Construction</h3>
+<p>
+We generate clean license plate images by rendering random 6-digit numeric strings on a
+yellow background using a single standard vehicle licence-plate font and dimensions, downscaled to
+$256 \times 64$ pixels. Each plate is then distorted through a five-stage pipeline:
+</p>
+<ul style="margin:0.3em 0 0.7em 1.4em; font-size:9.5pt; line-height:1.6;">
+ <li><strong>Geometric warp:</strong> homogeneous-coordinate rotation $\mathbf{R}(\alpha,\beta)$ followed by perspective projection $\Pi$ to produce a foreshortened plate (Eq.&nbsp;1).</li>
+ <li><strong>Edge blending:</strong> a soft alpha mask computed via a signed-distance field and logistic smoothing suppresses boundary artefacts introduced by the projection.</li>
+ <li><strong>Camera artefacts:</strong> colour jitter (brightness, contrast, saturation), Gaussian blur ($\sigma \in [0.5, 1.5]$), and JPEG compression (quality $\in [55, 85]$) simulate sensor noise and compression.</li>
+ <li><strong>De-warp and resize:</strong> the distorted image is de-warped with the inverse homography and downscaled to $256 \times 64$ pixels, matching the clean image resolution.</li>
+</ul>
+
+<p>
+Angle pairs $(\alpha, \beta)$ are drawn from a parametric probability density function (PDF) over
+$[-90^\circ, 90^\circ]^2$ using Scrambled Sobol sequences
+<cite>(<a href="#r16">Joe &amp; Kuo, 2008</a>)</cite>. This provides near-uniform coverage of the
+angle space with far fewer samples than random sampling. We define two PDF variants: a
+<em>Standard</em> variant (DS-S) with moderate emphasis on extreme angles, and an
+<em>Extreme</em> variant (DS-E) with a heavier tail that concentrates more samples near oblique angles.
+Two datasets are constructed (Table&nbsp;1); Fig.&nbsp;2 visualises their angle-density surfaces.
+All datasets use an 80/10/10 train/validation/test split.
+</p>
+
+</div><!-- close two-col for table -->
+
+<div class="tbl-wrap">
+ <div class="tbl-caption">
+ <strong>Table 1.</strong> Dataset specifications. All datasets share the same distortion pipeline
+ and $256 \times 64$ pixel resolution.
+ </div>
+ <table>
+ <thead>
+ <tr>
+ <th>Dataset</th>
+ <th>Total pairs</th>
+ <th>Angle PDF variant</th>
+ <th>Train</th>
+ <th>Validation</th>
+ <th>Test</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td class="td-left">Standard (DS-S)</td><td>10,240</td><td>Moderate emphasis on extreme angles</td><td>8,192</td><td>1,024</td><td>1,024</td></tr>
+ <tr><td class="td-left">Extreme (DS-E)</td><td>10,240</td><td>Strong emphasis on extreme angles</td><td>8,192</td><td>1,024</td><td>1,024</td></tr>
+ </tbody>
+ </table>
+</div>
+
+<figure>
+ <img src="figures/generated/fig02_dataset_angle_distribution.png"
+ alt="3D angle density surfaces for Standard and Extreme datasets">
+ <figcaption>
+ <strong>Fig. 2.</strong> Angle-pair sampling density for the two training datasets, plotted as 3D
+ surfaces over the $[0^\circ, 89^\circ]^2$ grid. Both datasets use Scrambled Sobol sequences for
+ near-uniform base coverage. The Standard dataset (left, DS-S) applies a moderate logistic-shaped
+ emphasis on large angles; the Extreme dataset (right, DS-E) concentrates substantially more mass
+ near the oblique-angle corners, providing harder training examples and a more
+ stringent test of each architecture's generalisation to extreme distortion.
+ </figcaption>
+</figure>
+
+<figure>
+ <img src="figures/generated/fig_synth_pipeline_panel.png"
+ alt="Synthetic data construction pipeline showing viewing geometry, warp, and artifacts">
+ <figcaption>
+ <strong>Fig. 3.</strong> Synthetic training-data construction. (a) Viewing geometry:
+ $\alpha$ is the azimuthal (lateral) rotation about the vertical axis, $\beta$ the elevational
+ rotation about the horizontal axis. (b)&ndash;(e) Pipeline stages: a clean plate is subjected
+ to a 3D rotation $R(\alpha,\beta)$ and perspective projection $\Pi$, then realistic camera
+ artifacts (blur, colour jitter, JPEG compression), and finally de-warped with $R^{-1}$ and
+ resized to $256 \times 64$. Each restoration network learns to invert this pipeline.
+ </figcaption>
+</figure>
+
+<div class="two-col">
+
+<h3 class="subsec">4.2. Restoration Architectures</h3>
+<p>
+Five architectures spanning discriminative and generative paradigms are implemented and compared
+(Table&nbsp;2). All models take the $256 \times 64$ distorted image as input and produce a
+same-resolution restored image.
+</p>
+<p>
+The <strong>U-Net baseline</strong> uses a standard encoder-decoder with skip connections and an L1 + SSIM loss.
+The <strong>U-Net Conditional</strong> extends this with FiLM (Feature-wise Linear Modulation) layers that inject
+the distortion angles $(\alpha, \beta)$ into each residual block, providing explicit geometric context.
+<strong>Restormer</strong> <cite>(<a href="#r2">Zamir et al., 2022</a>)</cite> replaces convolutional blocks with
+multi-Dconv head transposed attention (MDTA) and gated feed-forward networks, enabling long-range
+spatial modelling relevant to correcting directional foreshortening.
+</p>
+<p>
+<strong>GAN-Pix2Pix</strong> <cite>(<a href="#r3">Isola et al., 2017</a>)</cite> adds a patch discriminator
+to the U-Net generator, using a combined adversarial and L1 loss. <strong>Diffusion-SR3</strong> adapts the SR3
+super-resolution diffusion framework <cite>(<a href="#r4">Ho et al., 2020</a>)</cite> by conditioning
+the denoising network on the distorted plate. We use velocity prediction rather than noise prediction
+to stabilise training in the low-SNR uniform-colour regions of the plate:
+</p>
+
+<div class="eq-block">
+ $$v_t = \sqrt{\bar\alpha_t}\,\epsilon - \sqrt{1 - \bar\alpha_t}\,x_0$$
+ <span class="eq-num">(8)</span>
+</div>
+
+<p>
+where $\bar\alpha_t = \prod_{i=1}^t (1 - \beta_i)$ is the cumulative signal coefficient and
+$\epsilon \sim \mathcal{N}(0, I)$. At inference, deterministic DDIM sampling
+<cite>(<a href="#r5">Song et al., 2020</a>)</cite> with 20 steps is used.
+</p>
+
+</div><!-- close two-col for table -->
+
+<div class="tbl-wrap">
+ <div class="tbl-caption">
+ <strong>Table 2.</strong> Restoration architecture overview. Parameters reported for the
+ specific configuration used in this study; all models accept $256 \times 64$ RGB input and
+ produce a same-resolution restored output. Optimiser, base learning rate, and epoch count
+ are the settings used in the reported experiments.
+ </div>
+ <table>
+ <thead>
+ <tr>
+ <th>Model</th>
+ <th>Type</th>
+ <th>Key feature</th>
+ <th>Loss</th>
+ <th>Params (M)</th>
+ <th>Optimiser</th>
+ <th>Base LR</th>
+ <th>Epochs</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td class="td-left">U-Net (baseline)</td><td>Discriminative</td><td>Skip connections, encoder-decoder</td><td>L1 + SSIM</td><td>$\approx 7.8$</td><td>AdamW</td><td>$1\!\times\!10^{-4}$</td><td>120</td></tr>
+ <tr><td class="td-left">U-Net Conditional</td><td>Discriminative</td><td>FiLM conditioning on ($\alpha$, $\beta$)</td><td>L1 + SSIM</td><td>$\approx 7.9$</td><td>AdamW</td><td>$1\!\times\!10^{-4}$</td><td>120</td></tr>
+ <tr><td class="td-left">Restormer</td><td>Discriminative</td><td>MDTA transformer, global context</td><td>L1</td><td>$\approx 26.1$</td><td>AdamW</td><td>$3\!\times\!10^{-4}$</td><td>150</td></tr>
+ <tr><td class="td-left">GAN-Pix2Pix</td><td>Generative</td><td>Patch discriminator, adversarial</td><td>Adversarial + L1</td><td>$\approx 57.0$</td><td>Adam</td><td>$2\!\times\!10^{-4}$</td><td>200</td></tr>
+ <tr><td class="td-left">Diffusion-SR3</td><td>Generative</td><td>Velocity prediction, DDIM (20 steps)</td><td>Velocity MSE</td><td>$\approx 34.7$</td><td>Adam + warm-up</td><td>$2\!\times\!10^{-4}$</td><td>600k steps</td></tr>
+ </tbody>
+ </table>
+</div>
+
+<div class="two-col">
+
+<h3 class="subsec">4.3. Training Protocol</h3>
+<p>
+All models are trained on a single NVIDIA RTX 3090 (24 GB) GPU. Each model is trained independently
+on both datasets (Standard and Extreme), yielding ten model-dataset pairs. The per-model
+configuration is summarised in Table&nbsp;2. Batch size is $32$ for the three discriminative
+models, $16$ for GAN-Pix2Pix (generator plus discriminator), and $16$ for Diffusion-SR3.
+Discriminative models (U-Net, U-Net Conditional, Restormer) use the AdamW optimiser with weight
+decay $10^{-2}$ and a cosine-annealing learning-rate schedule decaying to $10^{-6}$ over the full
+training horizon. GAN-Pix2Pix uses Adam ($\beta_1 = 0.5$, $\beta_2 = 0.999$) with a fixed learning
+rate and alternates generator and discriminator updates every step. Diffusion-SR3 uses Adam with a
+5000-step linear warm-up followed by constant learning rate, and is trained for a fixed step budget
+rather than an epoch count because of its multi-step denoising objective; inference uses
+deterministic DDIM sampling with 20 steps. Model selection uses the validation-split PSNR and SSIM
+as surrogates for OCR: the checkpoint achieving the highest PSNR on the held-out validation set is
+retained for the final full-grid evaluation. Data augmentation is limited to the angle-sampling
+distribution itself (Section&nbsp;4.1); no photometric augmentation is applied beyond the camera
+artefacts baked into the construction pipeline. Typical wall-clock training time per
+model-dataset pair is 3-5&nbsp;h for U-Net variants, 35-45&nbsp;h for Restormer, 4-6&nbsp;h for
+GAN-Pix2Pix, and 12-18&nbsp;h for Diffusion-SR3.
+</p>
+
+<h3 class="subsec">4.4. Full-Grid Evaluation</h3>
+<p>
+A single shared evaluation set covers all integer angle pairs in $[0, 89]^2$ (8,100 pairs).
+Sampling density is 2 images per pair where $\alpha \leq 60$ and $\beta \leq 60$ (easy region),
+and 10 images per pair in the complementary high-distortion region ($\alpha > 60$ or $\beta > 60$).
+Six metrics are recorded per pair: plate-level PSNR and SSIM, worst-digit PSNR and SSIM,
+digit-level OCR accuracy, and plate-level OCR accuracy. The latter is the primary metric.
+</p>
+<p>
+PSNR is computed as:
+</p>
+<div class="eq-block">
+ $$\text{PSNR} = 10\log_{10}\!\left(\frac{\text{MAX}^2}{\text{MSE}}\right)$$
+ <span class="eq-num">(9)</span>
+</div>
+<p>
+OCR is performed by Tesseract v4 (LSTM mode, digit-only filter). Each restored image is converted
+to grayscale, contrast-normalised, upscaled 2x, and binarised. A multi-strategy fallback (Otsu,
+adaptive threshold, colour inversion) is applied per digit if the primary recognition fails. The
+final recognised string is compared to the ground truth to compute digit-level and plate-level
+accuracy.
+</p>
+
+</div><!-- close two-col for figure -->
+
+<div class="two-col">
+
+<!-- ===== 5. RESULTS ===== -->
+<h2 class="sec">5. Results</h2>
+
+<h3 class="subsec">5.1. Training Performance on Dataset Test Splits</h3>
+<p>
+Table&nbsp;3 reports PSNR, SSIM, normalised training time, and inference latency for each
+model-dataset pair. Restormer achieves the highest PSNR and SSIM on both datasets.
+Diffusion-SR3 consistently underperforms, particularly on SSIM, where it lags the U-Net baseline
+by $3.9$&ndash;$4.1$ percentage points.
+</p>
+
+</div>
+
+<div class="tbl-wrap">
+ <div class="tbl-caption">
+ <strong>Table 3.</strong> Test-split PSNR (dB), SSIM, normalised training time (U-Net = 1.00),
+ and inference latency (ms) per model and dataset. Best values per dataset shown in bold.
+ Latency measured on NVIDIA RTX 3090.
+ </div>
+ <table>
+ <thead>
+ <tr>
+ <th rowspan="2">Model</th>
+ <th colspan="2">Standard (DS-S)</th>
+ <th colspan="2">Extreme (DS-E)</th>
+ <th rowspan="2">Train time<br>(norm.)</th>
+ <th rowspan="2">Latency<br>(ms)</th>
+ </tr>
+ <tr>
+ <th>PSNR</th><th>SSIM</th>
+ <th>PSNR</th><th>SSIM</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td class="td-left">U-Net (baseline)</td>
+ <td>23.66</td><td>0.9705</td>
+ <td>20.96</td><td>0.9464</td>
+ <td>1.00</td><td>11.75</td>
+ </tr>
+ <tr>
+ <td class="td-left">U-Net Conditional</td>
+ <td>24.18</td><td>0.9743</td>
+ <td>21.35</td><td>0.9508</td>
+ <td>1.19</td><td class="best">7.50</td>
+ </tr>
+ <tr>
+ <td class="td-left">Restormer</td>
+ <td class="best">24.71</td><td class="best">0.9762</td>
+ <td class="best">21.67</td><td class="best">0.9563</td>
+ <td>14.87</td><td>14.01</td>
+ </tr>
+ <tr>
+ <td class="td-left">GAN-Pix2Pix</td>
+ <td>23.21</td><td>0.9672</td>
+ <td>19.97</td><td>0.9177</td>
+ <td>1.23</td><td class="best">7.34</td>
+ </tr>
+ <tr>
+ <td class="td-left">Diffusion-SR3</td>
+ <td>21.74</td><td>0.9315</td>
+ <td>19.34</td><td>0.9052</td>
+ <td>4.69</td><td>21.81</td>
+ </tr>
+ </tbody>
+ </table>
+</div>
+
+<div class="two-col">
+
+<p>
+On the Standard dataset, Restormer outperforms the U-Net baseline by 4.5% PSNR and 0.6% SSIM.
+U-Net Conditional improves by 2.2% PSNR at a training cost only 1.19x that of U-Net.
+GAN-Pix2Pix underperforms by 2.0% PSNR, and Diffusion-SR3 underperforms by 8.0% PSNR and 4.0% SSIM.
+On the Extreme dataset the ranking is preserved, though absolute PSNR drops by $\sim$3&ndash;4 dB
+for all models, reflecting the harder angle distribution (Fig.&nbsp;4).
+</p>
+<p>
+Efficiency results confirm that U-Net Conditional offers the best accuracy-latency tradeoff at
+7.50 ms inference. Restormer requires 14.87x the training compute of U-Net and has 14 ms latency.
+Diffusion-SR3 is the most expensive to deploy at 21.81 ms due to its 20-step DDIM sampling loop.
+</p>
+
+</div>
+
+<figure>
+ <img src="figures/generated/fig01_psnr_ssim_combined.png"
+ alt="PSNR and SSIM per model for Standard and Extreme datasets">
+ <figcaption>
+ <strong>Fig. 4.</strong> Test-split PSNR (dB, top row) and SSIM (bottom row) per model on the
+ Standard and Extreme datasets. Lollipops show deviation from the U-Net baseline (dashed line).
+ Restormer consistently leads; Diffusion-SR3 consistently lags. Absolute PSNR drops by
+ $\sim$3&ndash;4&thinsp;dB on the Extreme dataset, reflecting its heavier emphasis on oblique angles.
+ </figcaption>
+</figure>
+
+<div class="two-col">
+
+<h3 class="subsec">5.2. Spatial Recognition Patterns</h3>
+<p>
+Evaluating plate-level OCR accuracy over the full $[0^\circ, 89^\circ]^2$ angle grid reveals
+several spatial patterns that are consistent across all five models and both datasets. Recognition
+is near-perfect (OCR $\approx 1.0$) when both $\alpha$ and $\beta$ are below $70^\circ$; this
+region covers the majority of the grid and is the basis for the high boundary-AUC values reported
+in Table&nbsp;4. Recovery fails almost entirely once both angles exceed $80^\circ$, producing the
+approximately $6.6\%$ unrecoverable corner summarised in Section&nbsp;5.3.
+</p>
+<p>
+Critically, the boundary is not symmetric. Along the extreme-$\beta$ edge, accuracy remains high
+for $\alpha$ up to $\approx 60^\circ$ before declining. Along the extreme-$\alpha$ edge, accuracy
+drops sooner, even at low $\beta$. This $\alpha$-versus-$\beta$ asymmetry is consistent across
+both datasets and all five models, indicating that it is a property of the geometric distortion
+rather than any particular architecture. A plate viewed from the side (high $\alpha$) loses digit
+separability faster than a plate viewed from above (high $\beta$) because lateral foreshortening
+compresses the horizontal extent where digit strokes reside, while vertical foreshortening still
+leaves digit contrast largely intact. Fig.&nbsp;8 (qualitative comparison) illustrates this
+asymmetry: at $(\alpha=30^\circ,\beta=88^\circ)$ most models still recover the plate, whereas
+$(\alpha=85^\circ,\beta=65^\circ)$ already causes the first digit to fail for every model.
+</p>
+
+</div>
+
+<figure>
+ <img src="figures/generated/fig04_auc_f_slopegraph.png"
+ alt="Slope graph of Boundary-AUC and Reliability F from Standard to Extreme dataset">
+ <figcaption>
+ <strong>Fig. 5.</strong> Dataset-shift sensitivity of boundary-AUC (left) and reliability score
+ $F$ (right, log scale) for each model as training distribution shifts from Standard to Extreme.
+ Discriminative models (U-Net variants, Restormer) are essentially flat in AUC and tightly grouped
+ in $F$, indicating stable performance. Diffusion-SR3 shows a dramatic $F$ increase (0.572 → 1.124),
+ confirming hallucination sensitivity to angle-distribution shift.
+ </figcaption>
+</figure>
+
+<div class="two-col">
+
+<h3 class="subsec">5.3. Recoverability Boundaries and Maximal Coverage</h3>
+<p>
+Taking the pointwise maximum over all models and datasets yields the <em>maximal recoverability
+boundary</em>, which encloses a boundary-AUC of 0.934. Even pooling across all trained models
+and both training conditions, at most 93.4% of the $[0^\circ, 89^\circ]^2$
+angle grid can be recovered at $\geq 90\%$ plate OCR accuracy. The remaining 6.6% (the upper-right
+corner, where both $\alpha$ and $\beta$ exceed $\sim 80^\circ$) is physically unrecoverable:
+the signal energy in the severely foreshortened plate image is too low for any current restoration
+method to extract a recognisable digit sequence. Across all ten model-dataset pairs the
+per-model boundaries cluster tightly (see Table&nbsp;4), confirming that the recoverable region
+is determined by the physics of foreshortening rather than by architecture or training
+distribution. The $\alpha$-axis contracts faster than the $\beta$-axis, confirming the lateral
+rotation asymmetry.
+</p>
+
+</div>
+
+<!-- (removed Fig 6 recoverability boundary schematic: AUCs stated in prose and Table 4) -->
+</figure>
+
+<div class="two-col">
+
+<h3 class="subsec">5.4. Recoverability-Reliability Tradeoff</h3>
+<p>
+Table&nbsp;4 summarises the boundary-AUC and reliability score $F$ for all
+model-dataset pairs (Fig.&nbsp;5 visualises the dataset-shift sensitivity). Discriminative models cluster in the AUC range $[0.915, 0.921]$ with
+$F \in [0.095, 0.209]$, indicating both wide coverage and consistent interior performance.
+Generative models fall 1&ndash;3% lower in AUC: GAN-Pix2Pix achieves $F \approx 0.17$,
+while Diffusion-SR3 shows highly variable reliability, from $F = 0.57$ on Standard to $F = 1.12$
+on Extreme. This instability reflects the tendency of diffusion models to hallucinate plausible
+but incorrect digit sequences when the conditional input carries insufficient signal.
+</p>
+<p>
+Restormer achieves the best AUC on both datasets (0.920 and 0.921) and the lowest $F$ on Standard
+(0.095). On Extreme, however, its $F$ rises to 0.209 and U-Net Conditional takes the lowest
+$F$ (0.115); Restormer's coverage is therefore robust to training-distribution shift, but its
+interior consistency degrades. Comparing Standard and Extreme datasets, AUC values are nearly
+identical ($\Delta < 0.002$), indicating that training distribution shift does not substantially
+alter the recoverable boundary itself, only its interior reliability.
+</p>
+
+</div>
+
+<div class="tbl-wrap">
+ <div class="tbl-caption">
+ <strong>Table 4.</strong> Boundary-AUC and reliability score $F$ per model and dataset
+ on the full $[0^\circ, 89^\circ]^2$ evaluation grid ($T = 0.9$).
+ Higher AUC and lower $F$ are better. Best AUC per dataset in bold.
+ </div>
+ <table>
+ <thead>
+ <tr>
+ <th rowspan="2">Model</th>
+ <th colspan="2">Standard (DS-S)</th>
+ <th colspan="2">Extreme (DS-E)</th>
+ </tr>
+ <tr>
+ <th>AUC</th><th>F (deg)</th>
+ <th>AUC</th><th>F (deg)</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr><td class="td-left">U-Net (baseline)</td> <td>0.915</td><td>0.103</td><td>0.915</td><td>0.146</td></tr>
+ <tr><td class="td-left">U-Net Conditional</td> <td>0.916</td><td>0.145</td><td>0.917</td><td class="best">0.115</td></tr>
+ <tr><td class="td-left">Restormer</td> <td class="best">0.920</td><td class="best">0.095</td><td class="best">0.921</td><td>0.209</td></tr>
+ <tr><td class="td-left">GAN-Pix2Pix</td> <td>0.909</td><td>0.168</td><td>0.899</td><td>0.173</td></tr>
+ <tr><td class="td-left">Diffusion-SR3</td> <td>0.889</td><td>0.572</td><td>0.886</td><td>1.124</td></tr>
+ </tbody>
+ </table>
+</div>
+
+<div class="two-col">
+
+<h3 class="subsec">5.5. Metric Proxy Validity</h3>
+<p>
+For system developers, a key practical question is whether PSNR or SSIM can serve as a reliable
+surrogate for OCR accuracy during model training and validation, avoiding the computational cost
+of running OCR on every epoch checkpoint.
+</p>
+<p>
+Fig.&nbsp;6 shows the PSNR-OCR scatter for Restormer and Diffusion-SR3 on the Standard dataset,
+with each point representing one angle pair in the evaluation grid. The linear relationship is
+tight for both models:
+</p>
+<div class="eq-block">
+ $$\hat{y}_{\text{Rest}} = 0.032\,\text{PSNR} - 0.55, \quad R^2 = 0.991$$
+ <span class="eq-num">(10)</span>
+</div>
+<div class="eq-block">
+ $$\hat{y}_{\text{Diff}} = 0.043\,\text{PSNR} - 0.74, \quad R^2 = 0.979$$
+ <span class="eq-num">(11)</span>
+</div>
+<p>
+Each additional 1&thinsp;dB of PSNR yields approximately 3% OCR gain for Restormer and 4% for
+Diffusion-SR3. The error bars (one-standard-deviation bands over binned PSNR values) remain short
+across the full range, confirming that plates sharing similar PSNR values deliver nearly identical
+OCR outcomes. PSNR is thus a reliable training proxy; optimising it implicitly optimises OCR.
+</p>
+<p>
+By contrast, the SSIM-OCR relationship is threshold-like (Fig.&nbsp;7): OCR remains near zero
+until SSIM reaches approximately 0.87&ndash;0.88, then rises sharply. The linear fits:
+</p>
+<div class="eq-block">
+ $$\hat{y}_{\text{Rest}} = 7.883\,\text{SSIM} - 6.88, \quad R^2 = 0.777$$
+ <span class="eq-num">(12)</span>
+</div>
+<div class="eq-block">
+ $$\hat{y}_{\text{Diff}} = 6.395\,\text{SSIM} - 5.26, \quad R^2 = 0.739$$
+ <span class="eq-num">(13)</span>
+</div>
+<p>
+explain only 74&ndash;78% of OCR variance, and the error bars in the transition zone are wide:
+plates at the same SSIM level can have near-zero or near-perfect OCR depending on which specific
+digits are distorted. SSIM should not be used as the primary validation metric for LPR restoration.
+</p>
+
+</div>
+
+<figure>
+ <img src="figures/generated/fig07_psnr_ocr_correlation.png"
+ alt="PSNR vs OCR accuracy">
+ <figcaption>
+ <strong>Fig. 6.</strong> Plate-level PSNR vs. plate-level OCR accuracy for Restormer (left,
+ blue) and Diffusion-SR3 (right, red) on the Standard dataset. Solid lines show the exact linear
+ fits (Eqs.&nbsp;10&ndash;11). Binned means (circles) and one-standard-deviation error bars
+ confirm a tight, low-variance relationship across the full PSNR range. Horizontal dashed line
+ marks the $T = 0.9$ OCR threshold.
+ </figcaption>
+</figure>
+
+<figure>
+ <img src="figures/generated/fig08_ssim_ocr_threshold.png"
+ alt="SSIM vs OCR accuracy">
+ <figcaption>
+ <strong>Fig. 7.</strong> Plate-level SSIM vs. plate-level OCR accuracy (Eqs.&nbsp;12&ndash;13).
+ OCR remains near zero below SSIM $\approx 0.87$&ndash;$0.88$, then rises sharply. Wide error bars
+ in the transition zone indicate that SSIM is an unreliable training proxy: two plates at
+ identical SSIM can differ by nearly 100% in OCR accuracy.
+ </figcaption>
+</figure>
+
+<figure>
+ <img src="figures/generated/fig_comparison_panel.png"
+ alt="Plate restoration examples by each model at three angle regimes">
+ <figcaption>
+ <strong>Fig. 8.</strong> Qualitative plate restoration examples at three representative angle
+ regimes of increasing difficulty: <em>good recovery</em>
+ $(\alpha=30^\circ,\,\beta=88^\circ)$, single-axis extreme; <em>partial recovery</em>
+ $(\alpha=85^\circ,\,\beta=65^\circ)$, mixed extreme; and <em>failure</em>
+ $(\alpha=88^\circ,\,\beta=82^\circ)$, double extreme. Rows show each model's output; the first
+ two rows (distorted input and ground truth) are shared reference. Discriminative models (U-Net
+ variants, Restormer) produce legible digit sequences in the good- and partial-recovery cases,
+ while generative models (GAN-Pix2Pix, Diffusion-SR3) show visibly hallucinated or distorted
+ outputs. All models fail in the double-extreme case, consistent with the $\sim 93.4\%$ maximal
+ recoverability boundary.
+ </figcaption>
+</figure>
+
+<div class="two-col">
+
+<!-- ===== 6. DISCUSSION ===== -->
+<h2 class="sec">6. Discussion</h2>
+
+<h3 class="subsec">6.1. Interpretation of the Observed Patterns</h3>
+<p>
+Three empirical patterns follow from the structure of the problem rather than from implementation
+details, and a fourth concerns how the training-angle distribution affects interior consistency
+rather than coverage. The $\alpha/\beta$ asymmetry reflects the information geometry of the plate
+itself: a license plate is a horizontal strip in which digit identity is encoded in the horizontal
+separation of character strokes rather than in vertical extent. An elevational rotation $\beta$ compresses
+vertical extent but leaves the horizontal digit sequence intact, whereas a lateral rotation
+$\alpha$ compresses the axis along which the digits are encoded, collapsing adjacent characters
+into each other long before the plate becomes geometrically unrecognisable. This asymmetry is
+visible in every model and is therefore a property of the input signal rather than of the
+networks.
+</p>
+<p>
+The advantage of discriminative models reflects an alignment between training objective and task.
+U-Net, U-Net Conditional, and Restormer are trained end-to-end with paired (distorted, clean)
+samples and an L1 + SSIM objective, which is a direct regression of the distortion-to-character
+map that the networks must invert at inference time. GAN adversarial losses and diffusion
+denoising objectives instead prioritise perceptual plausibility, a criterion that competes with
+character fidelity: a plausible plate need not be the correct plate. Restormer and the U-Net
+variants therefore cluster near the top of Table&nbsp;4 on both AUC and $F$. Diffusion-SR3's
+instability at extreme angles follows from the same tradeoff: when the conditional input carries
+low signal-to-noise the denoising network is free to sample any digit string consistent with the
+remaining evidence, producing plausible but incorrect plates. The reliability score $F$ captures
+this directly, rising to $1.124$ on DS-E, an order of magnitude worse than any discriminative
+model.
+</p>
+<p>
+The training distribution shapes interior consistency rather than coverage. Boundary-AUC is
+nearly identical across the Standard and Extreme datasets ($\Delta &lt; 0.002$ for the
+discriminative models), indicating that the extent of the recoverable region is bounded by the
+physics of foreshortening rather than by the training-angle PDF. The angle PDF does, however,
+shape $F$: the Extreme dataset destabilises Diffusion-SR3 ($F$ rises from $0.57$ to $1.12$) and
+produces small shifts in interior behaviour for the other models. This is the classical
+bias-variance tradeoff of data distribution design and implies that practitioners building
+real-data pipelines should prioritise angular diversity and corner coverage over raw sample
+count.
+</p>
+
+<h3 class="subsec">6.2. Beyond LPR: Other Instances of the Framework</h3>
+<p>
+The recoverability-map framework introduced in Section&nbsp;3 is deliberately task-agnostic, and
+the methodology demonstrated here on oblique-view LPR transfers to several other
+opportunistic-sensing problems of interest to the urban-systems community. Face recognition from
+pole-mounted or body-worn cameras under controlled pose and occlusion parameters fits the
+framework directly: the parameter space becomes (yaw, occlusion fraction) and the utility is a
+thresholded face-identification score. Scene-text reading from dashcam imagery under glare and
+motion-blur parameters is another natural instantiation. Gait recognition from non-frontal CCTV,
+where the parameter space is camera viewpoint and walking-direction offset, is a third. In each
+case the same two summary measures, boundary-AUC and the reliability score $F$, would yield a
+comparable quantitative deployment guideline. We leave these instantiations as future work and
+present LPR here as a concrete first demonstration that the framework produces actionable
+numbers.
+</p>
+
+<h3 class="subsec">6.3. Implications for Smart City Deployment</h3>
+<p>
+The 93.4% maximal recoverability boundary provides a quantitative first-order planning guideline
+for urban infrastructure. Under the assumptions of the benchmark, if the worst-case viewing angle
+for a fixed sensor installation is bounded by $\alpha &lt; 80^\circ$ and $\beta &lt; 80^\circ$,
+then software-only restoration <em>appears capable</em> of recovering legible plates without
+hardware modification; this envelope covers the majority of practical ATM-camera,
+body-worn-device, and streetlight-camera geometries, whereas sensors placed with extreme lateral
+tilt and extreme elevation simultaneously fall outside it. Translating this guideline into a
+deployment criterion requires the real-data validation discussed in Section&nbsp;7.
+</p>
+<p>
+Among the evaluated architectures, discriminative models are the clear operational choice: they
+are easier to validate through explicit loss functions, more stable to train, and their PSNR
+improvements translate directly to OCR gains (Eqs.&nbsp;10&ndash;11). The hallucination behaviour
+of Diffusion-SR3 under low signal is a serious liability in any identity-recognition setting,
+since the model produces a visually clean plate with plausible but incorrect digits, a confident
+false reading that a downstream confidence filter cannot distinguish from a correct one.
+Discriminative models, by contrast, produce blurred or ambiguous outputs under the same
+conditions, which such filters can reject. Among discriminative models, U-Net Conditional offers
+the best operational tradeoff: accuracy within 2% of Restormer, only 1.19x the training cost of
+the U-Net baseline, and the lowest inference latency (7.50&nbsp;ms) of any model tested, which is
+compatible with real-time processing of continuous fixed-sensor streams at over 100 frames per
+second on a single GPU.
+</p>
+<p>
+The $\alpha/\beta$ asymmetry gives a practical corollary for camera placement: lateral mounting
+angle (which determines $\alpha$) is a more critical variable than vertical elevation (which
+determines $\beta$). A camera mounted very high on a pole retains LPR capability across a wide
+range of vehicle distances because the plate remains partially visible; a camera angled steeply
+to the side loses digit separability earlier. Urban planners seeking to enable opportunistic LPR
+from pole-mounted sensors should prioritise constraining the azimuthal angle over the elevational
+angle in sensor placement guidelines.
+</p>
+<p>
+Two additional deployment use-cases follow directly from the recoverability map:
+</p>
+<ul style="margin:0.3em 0 0.7em 1.4em; font-size:9.5pt; line-height:1.55;">
+ <li><strong>Forensic triage.</strong> For retrospective case work on archived footage, the
+ recoverability map supports fast pre-screening: captures whose estimated $(\alpha, \beta)$
+ fall in the upper-right corner ($\alpha, \beta &gt; 80^\circ$) can be flagged as unrecoverable
+ by any current method, saving analyst time.</li>
+ <li><strong>Expected-gain estimation.</strong> Given a sensor portfolio with known geometry
+ distribution, overlaying that distribution on the recoverability map gives the
+ <em>expected</em> fraction of captured vehicles that a restoration pipeline will render
+ readable, a quantity directly useful for ROI and procurement decisions.</li>
+</ul>
+
+<h3 class="subsec">6.4. Limitations</h3>
+<p>
+The study has several bounded scope conditions that should be read alongside the headline results.
+The benchmark is fully synthetic: clean plates are rendered in a single standard vehicle-plate
+format at a fixed $256 \times 64$ resolution, distorted by a fixed homographic pipeline at constant
+focal length and plate-to-camera distance, and perturbed with Gaussian blur
+($\sigma \in [0.5, 1.5]$), colour jitter, and JPEG compression (quality $\in [55, 85]$). Real
+captures introduce additional effects not modelled here, including scale variation with vehicle
+distance, motion blur, rolling-shutter skew, low-light noise, multi-font plate designs, dirt, and
+partial occlusion. Absolute recoverability thresholds reported in this paper, including the
+$93.4\%$ maximal coverage figure, therefore belong to the benchmark; the <em>structure</em> of the
+recoverability space (the location of the boundary, the $\alpha/\beta$ asymmetry, and the relative
+ordering of architectures) is the transferable contribution.
+</p>
+<p>
+The OCR back-end is Tesseract v4 with standard preprocessing (grayscale, contrast normalisation,
+$2\times$ upscaling, binarisation, per-digit fallbacks). A stronger end-to-end plate-specific OCR
+(for example PaddleOCR or a CRNN variant) would likely shift the absolute boundary numbers, though
+the relative ranking of architectures is expected to remain stable.
+</p>
+
+<!-- ===== 7. CONCLUSION ===== -->
+<h2 class="sec">7. Conclusion</h2>
+
+<p>
+This paper introduced <em>recoverability maps</em>, a task-agnostic framework for quantifying
+where in a parameterised degradation space an opportunistic-sensing task remains reliable. The
+framework builds on two summary measures adapted from classical operating-characteristic
+analysis: a boundary area-under-curve that captures coverage, and a reliability score $F$ that
+captures interior consistency. We demonstrated the framework on oblique-view license plate
+recognition as a concrete first instance.
+</p>
+<p>
+Applied to LPR, the framework yields a sharp quantitative envelope. Approximately $93.4\%$ of
+the $[0^\circ, 89^\circ]^2$ angle grid is recoverable at $\geq 90\%$ plate OCR accuracy; beyond
+roughly $80^\circ$ in both axes simultaneously, none of the evaluated architectures extracts a
+reliable plate number. The most intellectually load-bearing finding, however, is structural: all
+five restoration architectures share the same $\alpha/\beta$ asymmetry, in which lateral rotation
+is consistently harder to correct than elevational rotation. This asymmetry is a property of the
+input signal, namely the horizontal information geometry of the plate, rather than of any
+particular network, and it carries directly into camera-placement guidance for urban
+infrastructure. Discriminative architectures (U-Net, U-Net Conditional, Restormer) consistently
+outperform generative alternatives (GAN-Pix2Pix, Diffusion-SR3) in coverage, consistency, and
+reliability; the latter's hallucinations under low signal are a material liability for any
+identity-recognition application. PSNR tracks OCR accuracy closely enough ($R^2 \geq 0.979$) to
+serve as a training-time surrogate, which materially simplifies the model-selection loop by
+making OCR-in-the-loop validation unnecessary.
+</p>
+<p>
+Within the benchmark, most oblique viewing angles yield recoverable plates, a small
+double-extreme corner of the angle grid does not, and these findings, together with the framework
+itself, transfer to a broader class of opportunistic-sensing problems. The absolute numbers
+belong to the benchmark; the structural findings and the framework are the transferable
+contribution.
+</p>
+<p>
+A natural future-work direction follows from the observation, already raised in the Introduction,
+that public benchmarks do not sample the extreme parameter regimes in which opportunistic sensing
+actually operates. Closing this gap, for LPR and for the candidate tasks listed in
+Section&nbsp;6.2, requires either synthetic benchmarks of the kind presented here (extended to
+additional tasks and to richer acquisition models) or bespoke controlled-capture datasets that
+systematically sweep the parameter space. Within LPR specifically, complementary next steps are
+multi-seed statistics on $F$ to establish confidence intervals on the architecture ordering, and
+a sensitivity analysis with a stronger end-to-end plate OCR.
+</p>
+
+<h2 class="sec">Author Contributions</h2>
+<p>
+Conceptualization, A.A. and Y.A.; methodology, I.A., O.B.A. and A.A.; software, I.A. and O.B.A.;
+validation, I.A., O.B.A. and A.A.; formal analysis, I.A., O.B.A. and A.A.; investigation, I.A.
+and O.B.A.; data curation, I.A. and O.B.A.; writing, original draft preparation, I.A., O.B.A.
+and A.A.; writing, review and editing, Y.A. and A.A.; visualization, I.A. and O.B.A.;
+supervision, Y.A. and A.A.; project administration, A.A. All authors have read and agreed to
+the published version of the manuscript.
+</p>
+
+<h2 class="sec">Funding</h2>
+<p>
+This research received no external funding.
+</p>
+
+<h2 class="sec">Institutional Review Board Statement</h2>
+<p>
+Not applicable. This study did not involve humans or animals; all license plate imagery used in
+the benchmark is synthetically generated with randomly sampled digit strings.
+</p>
+
+<h2 class="sec">Informed Consent Statement</h2>
+<p>
+Not applicable.
+</p>
+
+<h2 class="sec">Data Availability Statement</h2>
+<p>
+The synthetic datasets analysed in this study are not redistributed as static files. They are
+fully and deterministically reproducible from the public data-generation pipeline released with
+this paper (see <em>Code Availability</em>), together with the Sobol seeds and distortion-pipeline
+parameters documented in Section&nbsp;4.1 and Table&nbsp;1. Re-running the pipeline yields
+bit-identical training, validation, and test splits. Pre-computed per-angle-pair evaluation
+results used to produce the figures and tables in this paper are available from the corresponding
+author on request.
+</p>
+
+<h2 class="sec">Code Availability</h2>
+<p>
+The dataset-generation pipeline (plate rendering, Sobol angle sampling, homographic distortion,
+and camera-artifact simulation), the training and evaluation scripts for all five architectures,
+and the figure-generation scripts used to produce the results in this paper will be released in a
+public GitHub repository upon acceptance. A DOI-minted snapshot of the release will be deposited
+on Zenodo.
+</p>
+
+<h2 class="sec">Conflicts of Interest</h2>
+<p>
+The authors declare no conflict of interest.
+</p>
+
+</div><!-- end two-col -->
+
+<!-- ===== REFERENCES ===== -->
+<div class="references">
+ <h2>References</h2>
+ <ol class="ref-list">
+ <li id="r1">
+ <span class="rnum">[1]</span>
+ Ronneberger, O., Fischer, P., &amp; Brox, T. (2015). U-net: Convolutional networks for
+ biomedical image segmentation. In <em>Medical Image Computing and Computer-Assisted
+ Intervention (MICCAI)</em> (pp. 234&ndash;241). Springer.
+ <a href="https://doi.org/10.1007/978-3-319-24574-4_28">https://doi.org/10.1007/978-3-319-24574-4_28</a>
+ </li>
+ <li id="r2">
+ <span class="rnum">[2]</span>
+ Zamir, S. W., Arora, A., Khan, S., Hayat, M., Khan, F. S., &amp; Yang, M. H. (2022).
+ Restormer: Efficient transformer for high-resolution image restoration. In
+ <em>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition
+ (CVPR)</em> (pp. 5728&ndash;5739).
+ <a href="https://doi.org/10.1109/CVPR52688.2022.00564">https://doi.org/10.1109/CVPR52688.2022.00564</a>
+ </li>
+ <li id="r3">
+ <span class="rnum">[3]</span>
+ Isola, P., Zhu, J.-Y., Zhou, T., &amp; Efros, A. A. (2017). Image-to-image translation
+ with conditional adversarial networks. In <em>Proceedings of the IEEE Conference on
+ Computer Vision and Pattern Recognition (CVPR)</em> (pp. 1125&ndash;1134).
+ <a href="https://doi.org/10.1109/CVPR.2017.632">https://doi.org/10.1109/CVPR.2017.632</a>
+ </li>
+ <li id="r4">
+ <span class="rnum">[4]</span>
+ Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising diffusion probabilistic models.
+ <em>Advances in Neural Information Processing Systems</em>, <em>33</em>, 6840&ndash;6851.
+ <a href="https://arxiv.org/abs/2006.11239">https://arxiv.org/abs/2006.11239</a>
+ </li>
+ <li id="r5">
+ <span class="rnum">[5]</span>
+ Song, J., Meng, C., &amp; Ermon, S. (2021). Denoising diffusion implicit models.
+ In <em>International Conference on Learning Representations (ICLR)</em>.
+ <a href="https://arxiv.org/abs/2010.02502">https://arxiv.org/abs/2010.02502</a>
+ </li>
+ <li id="r6">
+ <span class="rnum">[6]</span>
+ Burhenne, S., Jacob, D., &amp; Henze, G. P. (2011). Sampling based on Sobol' sequences
+ for Monte Carlo techniques applied to building simulations. In
+ <em>Proceedings of Building Simulation 2011</em> (pp. 1816&ndash;1823). IBPSA.
+ </li>
+ <li id="r7">
+ <span class="rnum">[7]</span>
+ Shashirangana, J., Padmasiri, H., Meedeniya, D., &amp; Perera, C. (2021). Automated
+ license plate recognition: A survey on methods and datasets.
+ <em>IEEE Access</em>, <em>9</em>, 11203&ndash;11228.
+ <a href="https://doi.org/10.1109/ACCESS.2020.3047929">https://doi.org/10.1109/ACCESS.2020.3047929</a>
+ </li>
+ <li id="r8">
+ <span class="rnum">[8]</span>
+ Anagnostopoulos, C. N. E., Anagnostopoulos, I. E., Psoroulas, I. D., &amp; Kayafas, E.
+ (2008). License plate recognition from still images and video sequences: A survey.
+ <em>IEEE Transactions on Intelligent Transportation Systems</em>, <em>9</em>(3), 377&ndash;391.
+ <a href="https://doi.org/10.1109/TITS.2008.922938">https://doi.org/10.1109/TITS.2008.922938</a>
+ </li>
+ <li id="r9">
+ <span class="rnum">[9]</span>
+ Campbell, A. T., Eisenman, S. B., Lane, N. D., Miluzzo, E., &amp; Peterson, R. A. (2008).
+ The rise of people-centric sensing. <em>IEEE Internet Computing</em>,
+ <em>12</em>(4), 12&ndash;21.
+ <a href="https://doi.org/10.1109/MIC.2008.90">https://doi.org/10.1109/MIC.2008.90</a>
+ </li>
+ <li id="r10">
+ <span class="rnum">[10]</span>
+ Ganti, R. K., Ye, F., &amp; Lei, H. (2011). Mobile crowdsensing: Current state and future
+ challenges. <em>IEEE Communications Magazine</em>, <em>49</em>(11), 32&ndash;39.
+ <a href="https://doi.org/10.1109/MCOM.2011.6069707">https://doi.org/10.1109/MCOM.2011.6069707</a>
+ </li>
+ <li id="r12">
+ <span class="rnum">[12]</span>
+ Batty, M. (2013). <em>The new science of cities</em>. MIT Press.
+ </li>
+ <li id="r13">
+ <span class="rnum">[13]</span>
+ Kitchin, R. (2014). The real-time city? Big data and smart urbanism.
+ <em>GeoJournal</em>, <em>79</em>(1), 1&ndash;14.
+ <a href="https://doi.org/10.1007/s10708-013-9516-8">https://doi.org/10.1007/s10708-013-9516-8</a>
+ </li>
+ <li id="r14">
+ <span class="rnum">[14]</span>
+ Goodchild, M. F. (2007). Citizens as sensors: The world of volunteered geographic
+ information. <em>GeoJournal</em>, <em>69</em>(4), 211&ndash;221.
+ <a href="https://doi.org/10.1007/s10708-007-9111-y">https://doi.org/10.1007/s10708-007-9111-y</a>
+ </li>
+ <li id="r15">
+ <span class="rnum">[15]</span>
+ Chen, X., Li, Z., Pu, Y., Liu, Y., Zhou, J., Qiao, Y., &amp; Dong, C. (2024).
+ A comparative study of image restoration networks for general backbone network design.
+ In <em>European Conference on Computer Vision (ECCV)</em>.
+ <a href="https://arxiv.org/abs/2310.11881">https://arxiv.org/abs/2310.11881</a>
+ </li>
+ <li id="r16">
+ <span class="rnum">[16]</span>
+ Joe, S., &amp; Kuo, F. Y. (2008). Constructing Sobol sequences with better
+ two-dimensional projections. <em>SIAM Journal on Scientific Computing</em>,
+ <em>30</em>(5), 2635&ndash;2654.
+ <a href="https://doi.org/10.1137/070709359">https://doi.org/10.1137/070709359</a>
+ </li>
+ <li id="r17">
+ <span class="rnum">[17]</span>
+ Wang, Z., Cun, X., Bao, J., Zhou, W., Liu, J., &amp; Li, H. (2022). Uformer: A general
+ U-shaped transformer for image restoration. In <em>Proceedings of the IEEE/CVF Conference
+ on Computer Vision and Pattern Recognition (CVPR)</em> (pp. 17683&ndash;17693).
+ <a href="https://doi.org/10.1109/CVPR52688.2022.01716">https://doi.org/10.1109/CVPR52688.2022.01716</a>
+ </li>
+ <li id="r18">
+ <span class="rnum">[18]</span>
+ Wang, Z., Bovik, A. C., Sheikh, H. R., &amp; Simoncelli, E. P. (2004). Image quality
+ assessment: From error visibility to structural similarity.
+ <em>IEEE Transactions on Image Processing</em>, <em>13</em>(4), 600&ndash;612.
+ <a href="https://doi.org/10.1109/TIP.2003.819861">https://doi.org/10.1109/TIP.2003.819861</a>
+ </li>
+ <li id="r19">
+ <span class="rnum">[19]</span>
+ Goodfellow, I., Pouget-Abadie, J., Mirza, M., Xu, B., Warde-Farley, D., Ozair, S.,
+ Courville, A., &amp; Bengio, Y. (2014). Generative adversarial nets.
+ <em>Advances in Neural Information Processing Systems</em>, <em>27</em>, 2672&ndash;2680.
+ <a href="https://dl.acm.org/doi/10.5555/2969033.2969125">https://dl.acm.org/doi/10.5555/2969033.2969125</a>
+ </li>
+ <li id="r20">
+ <span class="rnum">[20]</span>
+ Saharia, C., Ho, J., Chan, W., Salimans, T., Fleet, D. J., &amp; Norouzi, M. (2022).
+ Image super-resolution via iterative refinement.
+ <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, <em>45</em>(4),
+ 4713&ndash;4726.
+ <a href="https://doi.org/10.1109/TPAMI.2022.3204461">https://doi.org/10.1109/TPAMI.2022.3204461</a>
+ </li>
+ <li id="r21">
+ <span class="rnum">[21]</span>
+ Oktay, O., Schlemper, J., Le Folgoc, L., Lee, M., Heinrich, M., Misawa, K., Mori, K.,
+ McDonagh, S., Hammerla, N. Y., Kainz, B., Glocker, B., &amp; Rueckert, D. (2018).
+ Attention U-net: Learning where to look for the pancreas. In
+ <em>Medical Imaging with Deep Learning (MIDL)</em>.
+ <a href="https://arxiv.org/abs/1804.03999">https://arxiv.org/abs/1804.03999</a>
+ </li>
+ <li id="r22">
+ <span class="rnum">[22]</span>
+ Wang, X., Yu, K., Wu, S., Gu, J., Liu, Y., Dong, C., Loy, C. C., Qiao, Y., &amp; Tang, X.
+ (2018). ESRGAN: Enhanced super-resolution generative adversarial networks.
+ In <em>European Conference on Computer Vision Workshops (ECCVW)</em>.
+ <a href="https://doi.org/10.1007/978-3-030-11021-5_5">https://doi.org/10.1007/978-3-030-11021-5_5</a>
+ </li>
+ <li id="r23">
+ <span class="rnum">[23]</span>
+ Laroca, R., Zanlorensi, L. A., Gon&ccedil;alves, G. R., Todt, E., Schwartz, W. R., &amp;
+ Menotti, D. (2021). An efficient and layout-independent automatic license plate recognition
+ system based on the YOLO detector.
+ <em>IET Intelligent Transport Systems</em>, <em>15</em>(4), 483&ndash;503.
+ <a href="https://doi.org/10.1049/itr2.12030">https://doi.org/10.1049/itr2.12030</a>
+ </li>
+ <li id="r24">
+ <span class="rnum">[24]</span>
+ Zheng, Y., Capra, L., Wolfson, O., &amp; Yang, H. (2014). Urban computing: Concepts,
+ methodologies, and applications.
+ <em>ACM Transactions on Intelligent Systems and Technology</em>, <em>5</em>(3), Article 38.
+ <a href="https://doi.org/10.1145/2629592">https://doi.org/10.1145/2629592</a>
+ </li>
+ <li id="r25">
+ <span class="rnum">[25]</span>
+ Townsend, A. M. (2013). <em>Smart cities: Big data, civic hackers, and the quest for a
+ new utopia</em>. W. W. Norton &amp; Company.
+ </li>
+ <li id="r26">
+ <span class="rnum">[26]</span>
+ Lane, N. D., Miluzzo, E., Lu, H., Peebles, D., Choudhury, T., &amp; Campbell, A. T.
+ (2010). A survey of mobile phone sensing.
+ <em>IEEE Communications Magazine</em>, <em>48</em>(9), 140&ndash;150.
+ <a href="https://doi.org/10.1109/MCOM.2010.5560598">https://doi.org/10.1109/MCOM.2010.5560598</a>
+ </li>
+ <li id="r27">
+ <span class="rnum">[27]</span>
+ Burke, J. A., Estrin, D., Hansen, M., Parker, A., Ramanathan, N., Reddy, S., &amp;
+ Srivastava, M. B. (2006). Participatory sensing. In <em>Workshop on World-Sensor-Web
+ at ACM SenSys 2006</em>.
+ <a href="https://escholarship.org/uc/item/19h777qd">https://escholarship.org/uc/item/19h777qd</a>
+ </li>
+ <li id="r28">
+ <span class="rnum">[28]</span>
+ Eriksson, J., Girod, L., Hull, B., Newton, R., Madden, S., &amp; Balakrishnan, H.
+ (2008). The pothole patrol: Using a mobile sensor network for road surface monitoring.
+ In <em>Proceedings of the 6th International Conference on Mobile Systems, Applications,
+ and Services (MobiSys)</em> (pp. 29&ndash;39). ACM.
+ <a href="https://doi.org/10.1145/1378600.1378605">https://doi.org/10.1145/1378600.1378605</a>
+ </li>
+ <li id="r29">
+ <span class="rnum">[29]</span>
+ Laroca, R., Cardoso, E. V., Lucio, D. R., Estevam, V., &amp; Menotti, D. (2022).
+ On the cross-dataset generalization in license plate recognition.
+ In <em>Proceedings of the 17th International Joint Conference on Computer Vision,
+ Imaging and Computer Graphics Theory and Applications (VISAPP)</em>.
+ <a href="https://doi.org/10.5220/0010846800003124">https://doi.org/10.5220/0010846800003124</a>
+ </li>
+ <li id="r30">
+ <span class="rnum">[30]</span>
+ Silva, S. M., &amp; Jung, C. R. (2018). License plate detection and recognition in
+ unconstrained scenarios. In <em>European Conference on Computer Vision (ECCV)</em>
+ (pp. 580&ndash;596). Springer.
+ <a href="https://doi.org/10.1007/978-3-030-01258-8_36">https://doi.org/10.1007/978-3-030-01258-8_36</a>
+ </li>
+ <li id="r31">
+ <span class="rnum">[31]</span>
+ Xu, H., Guo, Z., Wang, D., Zhou, X., &amp; Zheng, Y. (2021). 2D license plate recognition
+ based on automatic perspective rectification. In <em>2020 25th International Conference
+ on Pattern Recognition (ICPR)</em> (pp. 7803&ndash;7810). IEEE.
+ <a href="https://doi.org/10.1109/ICPR48806.2021.9413152">https://doi.org/10.1109/ICPR48806.2021.9413152</a>
+ </li>
+ <li id="r32">
+ <span class="rnum">[32]</span>
+ Zou, Y., Wang, S., Xu, J., &amp; Li, H. (2019). Semantic super-resolution for
+ extremely low-resolution vehicle license plates. In <em>ICASSP 2019 &ndash; IEEE
+ International Conference on Acoustics, Speech and Signal Processing</em>
+ (pp. 3772&ndash;3776).
+ <a href="https://doi.org/10.1109/ICASSP.2019.8682507">https://doi.org/10.1109/ICASSP.2019.8682507</a>
+ </li>
+ <li id="r33">
+ <span class="rnum">[33]</span>
+ Hamdi, A., Chan, Y. K., &amp; Koo, V. C. (2021). A new image enhancement and
+ super-resolution technique for license plate recognition. <em>Heliyon</em>,
+ <em>7</em>(11), e08341.
+ <a href="https://doi.org/10.1016/j.heliyon.2021.e08341">https://doi.org/10.1016/j.heliyon.2021.e08341</a>
+ </li>
+ <li id="r34">
+ <span class="rnum">[34]</span>
+ Zhang, Z. (2000). A flexible new technique for camera calibration.
+ <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>,
+ <em>22</em>(11), 1330&ndash;1334.
+ <a href="https://doi.org/10.1109/34.888718">https://doi.org/10.1109/34.888718</a>
+ </li>
+ <li id="r35">
+ <span class="rnum">[35]</span>
+ Frome, A., Cheung, G., Abdulkader, A., Zennaro, M., Wu, B., Bissacco, A., Adam, H.,
+ Neven, H., &amp; Vincent, L. (2009). Large-scale privacy protection in Google Street
+ View. In <em>Proceedings of the IEEE International Conference on Computer Vision
+ (ICCV)</em> (pp. 2373&ndash;2380).
+ <a href="https://doi.org/10.1109/ICCV.2009.5459413">https://doi.org/10.1109/ICCV.2009.5459413</a>
+ </li>
+ <li id="r36">
+ <span class="rnum">[36]</span>
+ Martin, A., Doddington, G., Kamm, T., Ordowski, M., &amp; Przybocki, M. (1997).
+ The DET curve in assessment of detection task performance. In
+ <em>Proceedings of Eurospeech 1997</em> (pp. 1895&ndash;1898).
+ <a href="https://doi.org/10.21437/Eurospeech.1997-504">https://doi.org/10.21437/Eurospeech.1997-504</a>
+ </li>
+ <li id="r37">
+ <span class="rnum">[37]</span>
+ Serra, J. (1982). <em>Image Analysis and Mathematical Morphology</em>.
+ Academic Press, London.
+ </li>
+ </ol>
+</div>
+
+</body>
+</html>
