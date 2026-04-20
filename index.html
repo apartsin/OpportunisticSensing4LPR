@@ -332,14 +332,19 @@ hr.sec-rule {
 }
 </style>
 <style>
-.docx-download {
+.paper-actions {
   position: fixed;
   top: 12px;
   right: 12px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.paper-actions a {
   background: #1a5276;
   color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 12px;
   font-weight: 600;
   padding: 8px 14px;
@@ -347,23 +352,32 @@ hr.sec-rule {
   text-decoration: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
   transition: background 0.15s ease-in-out;
+  text-align: center;
 }
-.docx-download:hover {
+.paper-actions a:hover {
   background: #154360;
   text-decoration: none;
   color: #ffffff;
 }
+.paper-actions a.repo { background: #24292f; }
+.paper-actions a.repo:hover { background: #0d1117; }
 @media print {
-  .docx-download { display: none; }
+  .paper-actions { display: none; }
 }
 </style>
 </head>
 <body>
-<a class="docx-download"
-   href="Adamenko_et_al_Opportunistic_LPR_draft1.docx"
-   download>
-  Download MS Word (.docx)
-</a>
+<div class="paper-actions">
+  <a href="Adamenko_et_al_Opportunistic_LPR_draft1.docx" download>
+    Download MS Word (.docx)
+  </a>
+  <a class="repo"
+     href="https://github.com/apartsin/OpportunisticSensing4LPR"
+     target="_blank"
+     rel="noopener">
+    View on GitHub
+  </a>
+</div>
 
 <!-- ============================================================
  TITLE BLOCK
@@ -1466,24 +1480,22 @@ the benchmark is synthetically generated with randomly sampled digit strings.
 Not applicable.
 </p>
 
-<h2 class="sec">Data Availability Statement</h2>
+<h2 class="sec">Data and Code Availability</h2>
 <p>
-The synthetic datasets analysed in this study are not redistributed as static files. They are
-fully and deterministically reproducible from the public data-generation pipeline released with
-this paper (see <em>Code Availability</em>), together with the Sobol seeds and distortion-pipeline
-parameters documented in Section&nbsp;4.1 and Table&nbsp;1. Re-running the pipeline yields
-bit-identical training, validation, and test splits. Pre-computed per-angle-pair evaluation
-results used to produce the figures and tables in this paper are available from the corresponding
-author on request.
-</p>
-
-<h2 class="sec">Code Availability</h2>
-<p>
-The dataset-generation pipeline (plate rendering, Sobol angle sampling, homographic distortion,
-and camera-artifact simulation), the training and evaluation scripts for all five architectures,
-and the figure-generation scripts used to produce the results in this paper will be released in a
-public GitHub repository upon acceptance. A DOI-minted snapshot of the release will be deposited
-on Zenodo.
+The companion repository for this paper is hosted at
+<a href="https://github.com/apartsin/OpportunisticSensing4LPR">https://github.com/apartsin/OpportunisticSensing4LPR</a>
+and contains the paper (HTML and MS Word), all figures used in the manuscript, the
+figure-generation scripts required to reproduce the plots, the five restoration-architecture
+implementations (U-Net, angle-conditioned U-Net, Restormer, Pix2Pix, SR3 diffusion), and
+notebooks covering the Scrambled Sobol angle sampling, the full-grid evaluation harness, and
+the Tesseract v4 OCR pipeline described in Section&nbsp;4. The synthetic datasets analysed in
+this study are not redistributed as static files; they are fully and deterministically
+reproducible by re-running the sampling notebook with the Sobol seeds and distortion-pipeline
+parameters documented in Section&nbsp;4.1 and Table&nbsp;1, which yields bit-identical
+training, validation, and test splits. Pre-computed per-angle-pair evaluation results used to
+produce the figures and tables are available from the corresponding author on request.
+A DOI-minted Zenodo snapshot of the final repository release will accompany the peer-reviewed
+version of the paper.
 </p>
 
 <h2 class="sec">Conflicts of Interest</h2>

@@ -31,16 +31,31 @@ The HTML version renders fully in any modern browser via KaTeX. A published GitH
 │       ├── fig08_ssim_ocr_threshold.png         Fig. 7 (SSIM-OCR threshold)
 │       ├── fig_comparison_panel.png             Fig. 8 (qualitative reconstructions)
 │       └── fig_synth_pipeline_panel.png         Fig. 3 (data-construction pipeline)
-└── scripts/
-    ├── generate_figures.py                      reproduces Figs. 2, 4, 5
-    ├── make_pipeline_panel.py                   reproduces Fig. 3
-    ├── make_comparison_panel.py                 reproduces Fig. 8
-    └── make_ocr_correlation_figures.py          reproduces Figs. 6, 7 from report data
+├── scripts/
+│   ├── generate_figures.py                      reproduces Figs. 2, 4, 5
+│   ├── make_pipeline_panel.py                   reproduces Fig. 3
+│   ├── make_comparison_panel.py                 reproduces Fig. 8
+│   └── make_ocr_correlation_figures.py          reproduces Figs. 6, 7 from report data
+├── models/
+│   ├── unet.py                                  U-Net baseline architecture
+│   ├── unet_conditional.py                      Angle-conditioned U-Net (FiLM)
+│   ├── restormer.py                             Restormer (MDTA transformer)
+│   ├── pix2pix.py                               Pix2Pix GAN generator + discriminator
+│   └── diffusion_sr3.py                         SR3 diffusion (velocity prediction, DDIM)
+└── notebooks/
+    ├── Sampling.ipynb                           Scrambled Sobol angle sampling,
+    │                                            PDF parameterisation, dataset construction
+    ├── ocr_test.ipynb                           Tesseract OCR harness (preprocessing,
+    │                                            per-digit fallbacks, plate-level scoring)
+    ├── results.ipynb                            Per-angle-pair evaluation, AUC / F
+    │                                            computation, architecture comparison
+    └── report_artifacts.ipynb                   Original data-extraction notebook used
+                                                 to derive the tables reported in the paper
 ```
 
 ## Reproducing the figures
 
-All figures that were generated from numerical experiment data can be re-produced from the scripts in `scripts/`. Requirements: Python ≥ 3.10 with `numpy`, `matplotlib`, and `Pillow`.
+All figures in the paper can be re-produced from the scripts in `scripts/`. Requirements: Python ≥ 3.10 with `numpy`, `matplotlib`, and `Pillow`.
 
 ```bash
 cd scripts
@@ -50,11 +65,14 @@ python make_comparison_panel.py
 python make_ocr_correlation_figures.py
 ```
 
-The per-angle-pair evaluation data used to generate the scatter and threshold figures (Figs. 6 and 7) is drawn directly from the report images referenced in the scripts; Fig. 8 is assembled from the original report's reconstruction strips.
+## Dataset construction and training
 
-## Dataset and training pipeline
+- **`notebooks/Sampling.ipynb`** documents the Scrambled Sobol angle-sampling procedure, the parametric PDFs used for the Standard (DS-S) and Extreme (DS-E) datasets, and the deterministic pipeline that rebuilds the 80/10/10 splits bit-identically from a seed.
+- **`models/`** contains the five restoration architectures compared in the paper. Each file is a standalone model definition that follows the training protocol of Section 4.3 (AdamW / Adam with cosine or warm-up schedule, batch sizes as reported in Table 2).
+- **`notebooks/results.ipynb`** runs the full-grid evaluation described in Section 4.4, computes per-angle-pair plate-level OCR accuracy, PSNR, and SSIM, and produces the boundary-AUC and reliability-$F$ summary values reported in Table 4.
+- **`notebooks/ocr_test.ipynb`** encapsulates the Tesseract v4 OCR harness (grayscale, contrast normalisation, $2\times$ upscaling, binarisation, per-digit Otsu / adaptive / colour-inversion fallbacks) described in Section 4.4.
 
-This repository intentionally does **not** redistribute the synthetic training datasets as static files. They are fully deterministic and bit-identical given the Sobol seeds and distortion-pipeline parameters documented in Section 4.1 of the paper. The complete dataset-generation pipeline and per-architecture training scripts will be added here upon acceptance; until then, the paper's Section 4 documents every parameter required to re-implement the pipeline from scratch.
+The synthetic training datasets themselves are **not** redistributed as static files. They are fully deterministic and bit-identical given the Sobol seeds and distortion-pipeline parameters documented in Section 4.1 of the paper and in `notebooks/Sampling.ipynb`; re-running the sampling notebook regenerates them exactly.
 
 A DOI-minted Zenodo snapshot of this repository will accompany the final acceptance.
 
